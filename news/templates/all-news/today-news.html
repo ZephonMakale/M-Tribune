@@ -1,0 +1,47 @@
+{% extends 'all-news/base.html' %}
+{% load bootstrap4 %}
+{% load bootstrap3 %}
+
+{% block content %}
+{{block.super}}
+
+<div class="container">
+<!-- Looping through news   -->
+    {% for news_item in news %}
+    <div class="row">
+        <div class="col">
+            <div class="jumbotron jumbotron-fluid">
+                <img src="{{news_item.article_image.url}}" class="card-img-top" alt="..."
+                    style="width: 300px; margin-left: auto; margin-right: auto; display: block;">
+                <div class="container">
+                    <div class="card-body">
+                        
+                        <h5 class="card-title">{{ news_item.title }}</h5>
+                        <hr class="my-4">
+                        <p class="card-text">{{news_item.post}}</p>
+                        <hr class="my-4">
+                        <p class="card-text">Posted <small>{{news_item.pub_date|timesince}} by <span class="text-muted">{{news_item.editor.first_name}}</span></span></small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% empty %}
+    <div class="row">
+        <h2 class="text-center">There No News Items</h2>
+    </div>
+    {% endfor %}
+</div>
+<!-- Looping through news end   -->
+<div class="container-fluid">
+
+    <form  action="{%url 'newsToday'%}" method="post">
+    {%csrf_token%}
+
+    {% bootstrap_form letterForm layout='inline' %}
+    <input type="submit" value="Subscribe">
+    </form>
+
+</div>
+{% endblock content %}
